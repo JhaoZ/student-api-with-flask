@@ -3,6 +3,7 @@ import json
 from django.shortcuts import render
 from flask import Flask, jsonify, request, render_template, redirect, url_for
 import pymongo
+from random import choice
 from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -154,6 +155,7 @@ def go_to_edit(id):
 def add_a_student_link():
     return render_template('add.html')
 
+# Adds a new student through GUI
 @app.route('/addstudent', methods = ['POST'])
 def add_profile():
     to_add = request.form.to_dict()
@@ -164,3 +166,17 @@ def add_profile():
     students.insert_one(to_add)
     studentData.append(to_add)
     return redirect(url_for('home'))
+
+# Gets a random student
+@app.route('/rng')
+def random_student():
+    ids = []
+    for index, student in enumerate(studentData):
+        ids.append(student['ID'])
+    selection = choice(ids)
+    return redirect(url_for('go_to_profile', id = selection))
+
+# Goes to the guide
+@app.route('/guide')
+def go_to_guide():
+    return render_template('guide.html')

@@ -5,7 +5,7 @@
 {% block content %}
         <h2 class = "border-dark border-bottom pb-1 mb-2">Student Data</h2>        
         <a href="/add" class = "btn btn-info mb-2">Add a Student</a>
-        <a href="#" class = "btn btn-primary mb-2">Random</a>
+        <a href="{{url_for('random_student')}}" class = "btn btn-primary mb-2">Random</a>
             {% for student in data %}
             <!--card-->
             <div class = "card mb-4 shadow">
