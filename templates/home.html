@@ -3,13 +3,15 @@
 {% block title %}Student API Home{% endblock %}
 
 {% block content %}
-<h2 class = "border-dark border-bottom pb-1 mb-3">Student Data</h2>
+        <h2 class = "border-dark border-bottom pb-1 mb-2">Student Data</h2>        
+        <a href="/add" class = "btn btn-info mb-2">Add a Student</a>
+        <a href="#" class = "btn btn-primary mb-2">Random</a>
             {% for student in data %}
             <!--card-->
             <div class = "card mb-4 shadow">
                 <div style = "background-color: slategray" class = "card-header">
                     <h5 class = "d-inline card-title text-white">
-                    <a class = "text-white" href = "/{{student.FirstName}}_{{student.LastName}}/edit">
+                    <a class = "text-white" href = "/{{student.ID}}">
                         {{student.FirstName}} {{student.LastName}}
                     </a>
                     </h5>

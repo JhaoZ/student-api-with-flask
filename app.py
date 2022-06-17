@@ -1,6 +1,7 @@
 # import flask libraries
 import json
-from flask import Flask, jsonify, request, render_template
+from django.shortcuts import render
+from flask import Flask, jsonify, request, render_template, redirect, url_for
 import pymongo
 from pymongo import MongoClient
 
@@ -13,28 +14,7 @@ students = db.students
 import pprint
 
 # Dummy/existing data
-studentData = [
-    {
-        'FirstName': 'John',
-        'LastName': 'Doe',
-        'ID': '00001',
-        'GPA': 4.0,
-        'Class': '10A',
-        'Age': 16,
-        'LateAbsent' : 2,
-        'Description':'Participates in the Computer Science Club and is the President of the Web Development Club.',
-    },
-    {
-        'FirstName': 'Jane',
-        'LastName': 'Doe',
-        'ID': '00002',
-        'GPA': 3.8,
-        'Class': '10C',
-        'Age': 16,
-        'LateAbsent' : 4,
-        'Description':'Participates in the Biology Club, Child Welfare Club, and is the Vice President of the Math Club.',
-    },
-]
+studentData = []
 
 # Adds all the database to the dict studentData
 for s in students.find():
@@ -44,28 +24,6 @@ for s in students.find():
 @app.route("/")
 def home():
     return render_template('home.html', data = studentData)
-
-@app.route('/studentdata/<firstname>_<lastname>', methods = ['GET', 'PUT', 'DELETE'])
-def get_or_update_or_delete_student(firstname,lastname):
-    if request.method == 'GET':
-        for index, student in enumerate(studentData):
-            if student['FirstName'] == firstname and student['LastName'] == lastname:
-                return studentData[index]
-        return jsonify('Cannot find specified student')
-    elif request.method == 'PUT':
-        update = request.get_json()
-        for index, student in enumerate(studentData):
-            if student['FirstName'] == firstname and student['LastName'] == lastname:
-                studentData[index] = update
-                return jsonify({'Successful Update' : request.get_json()})
-        return jsonify({'Unsuccessful Update'})
-    else:
-        for index, student in enumerate(studentData):
-            if student['FirstName'] == firstname and student['LastName'] == lastname:
-                del studentData[index]
-                db.students.delete_one({'FirstName': firstname, 'LastName':lastname})
-                return jsonify({'Deleted': firstname + " " + lastname})
-        return jsonify({'Delete Failed'})
 
 # Get request for all the student data in json format
 @app.route('/studentdata', methods = ['GET'])
@@ -90,10 +48,32 @@ def get_student_by_id(id):
         for index, student in enumerate(studentData):
             if student['ID'] == id:
                 del studentData[index]
-                db.students.delete_one({'ID': id})
+                students.delete_one({'ID': id})
                 return jsonify({'Deleted': id})
         return jsonify({'Delete Failed'})
-    
+
+@app.route('/data/<id>', methods = ['GET', 'POST'])
+def student_id_methods(id):
+    if request.method == 'GET':
+        for index, student in enumerate(studentData):
+            if student['ID'] == id:
+                return studentData[index]
+        return jsonify({'Cannot find specified student'})
+    else:
+        update = request.form.to_dict()
+        for index, student in enumerate(studentData):
+            if student['ID'] == id:
+                students.delete_one({'ID': id})
+                students.insert_one(update)
+                id_to_use = update['ID']
+                if does_id_exist(update['ID']):
+                    id_to_use = get_new_id(id_to_use)
+                update['ID'] = id_to_use
+                studentData[index] = update
+                return redirect(url_for('home'))
+        return jsonify({'Unsuccessful Update'})
+
+# Adds a student through POST
 @app.route('/studentdata', methods = ['POST'])
 def add_student():
     new_student = request.get_json()
@@ -136,14 +116,51 @@ def does_id_exist(id):
             return True
     return False
 
+@app.route('/<id>')
+def go_to_profile(id):
+    for index, student in enumerate(studentData):
+        if student['ID'] == id:
+            data = studentData[index]
+            return render_template('profile.html', student = data)
+    return jsonify('This student does not exist')
+
+# Deleting a profile through GUI
+@app.route('/<id>/delete', methods = ['POST'])
+def delete_profile(id):
+    if request.method == 'POST':
+        for index, student in enumerate(studentData):
+            if student['ID'] == id:
+                data = studentData[index]
+                del studentData[index]
+                students.delete_one({'ID': id})
+                return redirect(url_for('home'))
+    else:
+        return jsonify('Something went wrong')
+
+
 # Returns a view of a form to update a post
-@app.route('/<firstname>_<lastname>/edit')
-def go_to_edit(firstname, lastname):
+@app.route('/<id>/edit')
+def go_to_edit(id):
     data = 0
     for index, student in enumerate(studentData):
-        if student['FirstName'] == firstname and student['LastName'] == lastname:
+        if student['ID'] == id:
             data = studentData[index]
     if not data == 0:
-        return render_template('edit.html', data = data)
+        return render_template('edit.html', student = data)
     else:
         return jsonify('This student does not exist')
+
+@app.route('/add')
+def add_a_student_link():
+    return render_template('add.html')
+
+@app.route('/addstudent', methods = ['POST'])
+def add_profile():
+    to_add = request.form.to_dict()
+    id_to_use = to_add['ID']
+    if does_id_exist(to_add['ID']):
+        id_to_use = get_new_id(id_to_use)
+    to_add['ID'] = id_to_use
+    students.insert_one(to_add)
+    studentData.append(to_add)
+    return redirect(url_for('home'))

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Student API - {{student.FirstName}} {{student.LastName}}{% endblock %}
+
+{% block content %}
+<h2 class = "border-dark border-bottom pb-1 mb-3">{{student.FirstName}}'s Profile</h2>
+<div class = "card mb-4 shadow">
+    <div style = "background-color: slategray" class = "card-header">
+        <h5 class = "d-inline card-title text-white">
+            {{student.FirstName}} {{student.LastName}}
+        </h5>
+        <div class ="d-inline float-right">
+            <p class = "d-inline text-white">
+                ID: {{student.ID}}
+            </p>
+        </div>
+    </div>
+    <div class ="card-body">
+        <div class = "mb-4">
+            <a href = "{{student.ID}}/edit" class = "btn btn-primary">Edit</a>
+            <form action="{{url_for('delete_profile', id = student.ID)}}" method = "POST" class = "d-inline">
+                <button class = "btn btn-danger">Delete</button>
+            </form>
+            <a href = "/" class = "btn btn-info">Go Back</a>
+        </div>
+        <h6 class = "card-subtitle mb-2 text-muted">GPA: {{student.GPA}}/4.0</h6>
+        <h6 class = "card-subtitle mb-2 text-muted">Class: {{student.Class}}</h6>
+        <h6 class = "card-subtitle mb-2 text-muted">Age: {{student.Age}}</h6>
+        <h6 class = "card-subtitle mb-2 text-muted">Tardies and Absences: {{student.LateAbsent}}</h6>
+        <p class = "card-text">{{student.Description}}</p>
+    </div>
+</div>
+{% endblock %}
