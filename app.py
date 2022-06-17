@@ -136,4 +136,14 @@ def does_id_exist(id):
             return True
     return False
 
-
+# Returns a view of a form to update a post
+@app.route('/<firstname>_<lastname>/edit')
+def go_to_edit(firstname, lastname):
+    data = 0
+    for index, student in enumerate(studentData):
+        if student['FirstName'] == firstname and student['LastName'] == lastname:
+            data = studentData[index]
+    if not data == 0:
+        return render_template('edit.html', data = data)
+    else:
+        return jsonify('This student does not exist')
