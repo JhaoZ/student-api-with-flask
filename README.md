@@ -10,10 +10,12 @@ Flask,
 pymongo,
 A mongodb installation
 ```
-
-
+### GUI
 
 ![Home Page](/images/home.PNG)
+The home page with 2 examples of students. The home page is where you can view all the students.
+
+### API CALLS
 
 To launch, use ```flask run -h localhost -p {whichever port you want}``` and then open ```localhost:{port}```
 
