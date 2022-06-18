@@ -13,10 +13,24 @@ A mongodb installation
 ### GUI
 
 ![Home Page](/images/home.PNG)
-The home page with 2 examples of students. The home page is where you can view all the students.
+The home page with 2 examples of students. The home page is where you can view all the students. Note: The home page will be empty when you first open it, because there is no initial data, you will have to add your own.
 
 ### API CALLS
 
-To launch, use ```flask run -h localhost -p {whichever port you want}``` and then open ```localhost:{port}```
+API calls to this are done through a different link. You must use the link ```localhost:{port number}/studentdata``` to manipulate the student data through API calls.
+To send requests, postman (https://web.postman.co/) can be used. 
+
+To access all of the students in JSON format, you can send a GET request to ```localhost:{port number}/studentdata```.
+
+To access one of the students in JSON format, you can send a GET request to ```localhost:{port number}/studentdata/<id>```, where ```id``` stands for student ID (student IDs cannot be repeated, each student has a unique ID).
+
+To add a student, you send a POST request to ```localhost:{port number}/studentdata```, with the format being
+```{"FirstName": [put the first name here], "LastName": [put the last name here], "ID": [put student ID here], "GPA": [put student GPA here], "Class": [put class here], "Age": [put student age here], "LateAbsent": [put the number of tardies and absents for the student here], "Description": [put a description here]}```
+
+To edit/delete a student, send a PUT/DELETE request (respectively) to ```localhost:{port number}/studentdata/<id>```. For editing a student, you must send a PUT request with the JSON format of a student shown above.
+
+### HOW TO USE
+
+To launch, use ```flask run -h localhost -p {whichever port you want}``` and then open ```localhost:{port}``` in your browser. Alternativly, open postman and use the API calls to access the website data.
 
 Made originally during UIUC SOSP 2022
