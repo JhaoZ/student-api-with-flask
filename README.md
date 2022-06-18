@@ -47,7 +47,7 @@ To edit/delete a student, send a PUT/DELETE request (respectively) to ```localho
 
 ### HOW TO USE
 
-To launch, use ```flask run -h localhost -p {whichever port you want}``` and then open ```localhost:{port}``` in your browser. Alternativly, open postman and use the API calls to access the website data.
+To launch, use ```flask run -h localhost -p {whichever port you want}``` and then open ```localhost:{port number}``` in your browser. Alternativly, open postman and use the API calls to access the website data.
 
 Any questions? Email me at billjz2@illinois.edu
 
