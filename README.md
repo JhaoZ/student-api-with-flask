@@ -15,6 +15,12 @@ A mongodb installation
 ![Home Page](/images/home.PNG)
 The home page with 2 examples of students. The home page is where you can view all the students. Note: The home page will be empty when you first open it, because there is no initial data, you will have to add your own.
 
+The add a student button leads you to a form where you can add students.
+
+![Add Student Page](/images/AddStudentPage.PNG)
+
+Filling out this form and clicking the submit button will add the the student to the home page and the database.
+
 ### API CALLS
 
 API calls to this are done through a different link. You must use the link ```localhost:{port number}/studentdata``` to manipulate the student data through API calls.
