@@ -21,11 +21,15 @@ The add a student button leads you to a form where you can add students.
 
 Filling out this form and clicking the submit button will add the the student to the home page and the database.
 
-You can click on the name of the student on the home page to access their profile page.
+You can click on the name of the student on the home page to access their profile page. Clicking the random button will open a random student's profile.
 
 ![Profile Page for example "John Doe"](/images/Profile.PNG)
 
-Here, you can choose to edit a student, delete them, or just go back to the home page.
+Here, you can choose to edit a student, delete them, or just go back to the home page. **Warning**: There is no confirmation page for deleting. Once you click the delete button the student is gone forever.
+
+![Edit Page](/images/Edit.PNG)
+
+The edit page has a similar format to the add page, and clicking the submit button will update the student.
 
 ### API CALLS
 
@@ -44,5 +48,7 @@ To edit/delete a student, send a PUT/DELETE request (respectively) to ```localho
 ### HOW TO USE
 
 To launch, use ```flask run -h localhost -p {whichever port you want}``` and then open ```localhost:{port}``` in your browser. Alternativly, open postman and use the API calls to access the website data.
+
+Any questions? Email me at billjz2@illinois.edu
 
 Made originally during UIUC SOSP 2022
