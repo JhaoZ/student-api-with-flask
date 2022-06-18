@@ -21,6 +21,12 @@ The add a student button leads you to a form where you can add students.
 
 Filling out this form and clicking the submit button will add the the student to the home page and the database.
 
+You can click on the name of the student on the home page to access their profile page.
+
+![Profile Page for example "John Doe"](/images/Profile.PNG)
+
+Here, you can choose to edit a student, delete them, or just go back to the home page.
+
 ### API CALLS
 
 API calls to this are done through a different link. You must use the link ```localhost:{port number}/studentdata``` to manipulate the student data through API calls.
