@@ -11,7 +11,9 @@ pymongo,
 A mongodb installation
 ```
 
-![Home Page](images/home.png)
+
+
+![Home Page](./images/home.png)
 
 To launch, use ```flask run -h localhost -p {whichever port you want}``` and then open ```localhost:{port}```
 
